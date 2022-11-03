@@ -1,10 +1,13 @@
 FROM python:slim
 
-RUN useradd microblog
+# RUN useradd microblog
 
 WORKDIR /home/microblog
 
 COPY requirements.txt requirements.txt
+RUN apt-get update
+RUN apt-get -y install build-essential
+
 RUN python -m venv venv
 RUN venv/bin/pip install -r requirements.txt
 RUN venv/bin/pip install gunicorn pymysql cryptography
@@ -16,8 +19,8 @@ RUN chmod a+x boot.sh
 
 ENV FLASK_APP microblog.py
 
-RUN chown -R microblog:microblog ./
-USER microblog
+# RUN chown -R microblog:microblog ./
+# USER microblog
 
 EXPOSE 5000
 ENTRYPOINT ["./boot.sh"]
